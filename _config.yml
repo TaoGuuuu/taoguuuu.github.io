@@ -77,4 +77,8 @@ theme: taoguuuu
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repository: https://github.com/TaoGuuuu/taoguuuu.github.io.git
+  branch: master
+  plugins: -hexo-generator-feed
+  

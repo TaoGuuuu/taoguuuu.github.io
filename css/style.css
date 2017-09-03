@@ -106,7 +106,8 @@ ol {
 .header .social-nav li .social-show {
   width: 50px;
   left: -10px;
-  top: 40px;
+  top: 50px;
+  color: #368ccb;
 }
 .header .social-nav li .wx-img {
   left: -47px;
@@ -144,8 +145,8 @@ ol {
   color: #000;
 }
 .header .menu-nav a:hover {
-  color: #888;
-  border-bottom: 1px dashed #888;
+  color: #368ccb;
+  border-bottom: 1px dashed #368ccb;
 }
 @media screen and (max-width: 479px) {
   .header {

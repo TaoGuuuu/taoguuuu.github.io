@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>李涛の博客</title>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+		  <div class="wrap">
+			  <div class="header"><div class="config-mess">
+  <a href="/">
+    <h2 class="config-title">李涛の博客</h2>
+    <h3 class="config-subtitle">flow like water,行云流水。</h3> 
+  </a> 
+</div>
+<div class="menu-nav">
+  <ul>
+  
+    <li>
+      <a href="/" class="menu-item-link"><img src="/css/images/主页.jpg">主页</a>
+    </li>
+  
+    <li>
+      <a href="/archives" class="menu-item-link"><img src="/css/images/归档.jpg">归档</a>
+    </li>
+  
+    <li>
+      <a href="/comment" class="menu-item-link"><img src="/css/images/留言.jpg">留言</a>
+    </li>
+  
+  </ul>
+</div>
+<div class="social-nav">
+  <ul>
+    <li><img src="/css/images/微信.jpg"><div class="wx-img"><img src="/css/images/wxewm.jpg"></div>
+    </li>
+  
+    <li>
+      <a href="https://weibo.com/1987228011" target="_blank"><img src="/css/images/微博.jpg"><div class="social-show"><span>微博</span></div></a>
+    </li>
+  
+    <li>
+      <a href="http://github.com/TaoGuuuu" target="_blank"><img src="/css/images/github.jpg"><div class="social-show"><span>github</span></div></a>
+    </li>
+  
+  </ul>
+</div>
+
+</div>
+			  <div class="main"><article class="post">
+  <div class="post-title">
+    <h2 class="title">移动端1像素border及背景图片2X,3X处理</h2>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2017-10-10</span>
+  </div>
+  <div class="post-content">
+    <p>移动端由于分辨率 DPI 的差异，高清手机屏上的 1px 实际上是由 2×2 个像素点来渲染，有的屏幕甚至用到了 3×3 个像素点，所以 border: 1px 在移动端会渲染为 2px 的边框。<br><a id="more"></a><br><br></p>
+<h4 id="一、移动端1像素border："><a href="#一、移动端1像素border：" class="headerlink" title="一、移动端1像素border："></a>一、移动端1像素border：</h4><p>1,mixin.styl：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">border-1px($color)</div><div class="line">  position: relative</div><div class="line">  &amp;:after</div><div class="line">    display: block</div><div class="line">    position: absolute</div><div class="line">    left: 0</div><div class="line">    bottom: 0</div><div class="line">    width: 100%</div><div class="line">    border-top: 1px solid $color</div><div class="line">    content: &apos;&apos;</div></pre></td></tr></table></figure></p>
+<p>2,base.styl:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">@media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2)  </div><div class="line">  .border-1px  </div><div class="line">    &amp;::after  </div><div class="line">      -webkit-transform: scaleY(0.5)  </div><div class="line">      transform: scaleY(0.5)</div><div class="line">@media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)  </div><div class="line">  .border-1px  </div><div class="line">    &amp;::after  </div><div class="line">      -webkit-transform: scaleY(0.33)  </div><div class="line">      transform: scaleY(0.33)</div></pre></td></tr></table></figure></p>
+<p>3,调用:<br>html:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;tab border-1px&quot;&gt;&lt;/div&gt;</div></pre></td></tr></table></figure></p>
+<p>css:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@import &quot;mixin.styl&quot;</div><div class="line">@import &quot;base.styl&quot;</div><div class="line">.tab</div><div class="line">  border-1px(rgba(2,42,57,0.2))</div></pre></td></tr></table></figure></p>
+<p><br></p>
+<h4 id="二、背景图片2X-3X处理-名称为xxx-2x-png-xxx-3x-png："><a href="#二、背景图片2X-3X处理-名称为xxx-2x-png-xxx-3x-png：" class="headerlink" title="二、背景图片2X,3X处理,名称为xxx@2x.png,xxx@3x.png："></a>二、背景图片2X,3X处理,名称为xxx@2x.png,xxx@3x.png：</h4><p>1,mixin.styl:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">bg-image($url)</div><div class="line">  background-image:url($url+&quot;@2x.png&quot;)</div><div class="line">  @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)</div><div class="line">    background-image:url($url+&quot;@3x.png&quot;)</div></pre></td></tr></table></figure></p>
+<p>2,调用:<br>html:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;span class=&quot;brand&quot;&gt;&lt;/span&gt;</div></pre></td></tr></table></figure></p>
+<p>css:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@import &quot;mixin.styl&quot;</div><div class="line">.brand</div><div class="line">  width: 24px</div><div class="line">  height: 24px</div><div class="line">  background-size: 24px 24px</div><div class="line">  background-repeak: no-repeat</div><div class="line">  bg-image(&apos;xxx&apos;)</div></pre></td></tr></table></figure></p>
+
+  </div>
+</article></div>
+			</div>
+			<div class="footer"><div class="inner">
+	&copy; 2017 | <a href="http://github.com/TaoGuuuu" target="_blank">TaoGuuuu</a> | 
+	<script src="https://s22.cnzz.com/z_stat.php?id=1263981465&web_id=1263981465" language="JavaScript"></script>
+	<br> 
+	<span id="busuanzi_container_site_uv">
+  	访客数 <span id="busuanzi_value_site_uv"></span> 人次
+	</span> | 
+	<span id="busuanzi_container_site_pv">
+	  访问量 <span id="busuanzi_value_site_pv"></span> 次
+	</span>	
+</div>
+<div class="return-top" id="return_top">
+	<img src="/css/images/top.png">
+</div>   </div>
+		</div> 
+		<script src="/js/returntop.js"></script>	
+		<script src="/js/share.js"></script>	
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2142922"></script>
+  </body>
+</html>

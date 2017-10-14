@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>李涛の博客</title>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+		  <div class="wrap">
+			  <div class="header"><div class="config-mess">
+  <a href="/">
+    <h2 class="config-title">李涛の博客</h2>
+    <h3 class="config-subtitle">flow like water,行云流水。</h3> 
+  </a> 
+</div>
+<div class="menu-nav">
+  <ul>
+  
+    <li>
+      <a href="/" class="menu-item-link"><img src="/css/images/主页.jpg">主页</a>
+    </li>
+  
+    <li>
+      <a href="/archives" class="menu-item-link"><img src="/css/images/归档.jpg">归档</a>
+    </li>
+  
+    <li>
+      <a href="/comment" class="menu-item-link"><img src="/css/images/留言.jpg">留言</a>
+    </li>
+  
+  </ul>
+</div>
+<div class="social-nav">
+  <ul>
+    <li><img src="/css/images/微信.jpg"><div class="wx-img"><img src="/css/images/wxewm.jpg"></div>
+    </li>
+  
+    <li>
+      <a href="https://weibo.com/1987228011" target="_blank"><img src="/css/images/微博.jpg"><div class="social-show"><span>微博</span></div></a>
+    </li>
+  
+    <li>
+      <a href="http://github.com/TaoGuuuu" target="_blank"><img src="/css/images/github.jpg"><div class="social-show"><span>github</span></div></a>
+    </li>
+  
+  </ul>
+</div>
+
+</div>
+			  <div class="main"><article class="post">
+  <div class="post-title">
+    <h2 class="title">关于JQuery的一些优化</h2>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2017-09-24</span>
+  </div>
+  <div class="post-content">
+    <p>以下列出了一些JQuery常见的优化方法：<br><a id="more"></a><br><br></p>
+<h4 id="一、减少对dom的请求，选择器尽量简化："><a href="#一、减少对dom的请求，选择器尽量简化：" class="headerlink" title="一、减少对dom的请求，选择器尽量简化："></a>一、减少对dom的请求，选择器尽量简化：</h4><p>较差：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$(&quot;.a li#b&quot;).attr(&quot;title&quot;,&quot;$(&apos;.a li#b&apos;).text()&quot;);</div><div class="line">$(&quot;.a li#b&quot;).css(&quot;color&quot;,&quot;red&quot;);</div><div class="line">$(&quot;.a li#b&quot;).fadeOut();</div></pre></td></tr></table></figure></p>
+<p>优化后：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var b = $(&quot;#b&quot;)</div><div class="line">b.attr(&quot;title&quot;,b.text()).css(&quot;color&quot;,&quot;red&quot;).fadeOut();</div></pre></td></tr></table></figure></p>
+<h4 id="二、向页面插入多个元素："><a href="#二、向页面插入多个元素：" class="headerlink" title="二、向页面插入多个元素："></a>二、向页面插入多个元素：</h4><p>较差：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var arr = [&quot;apple&quot;,&quot;banana&quot;,&quot;car&quot;];</div><div class="line">list = $(&quot;ul.obj&quot;);</div><div class="line">$.each(arr, function(index, value)&#123;</div><div class="line">list.append(&quot;&lt;li id=&quot;+index+&quot;&gt;&quot;+value+&quot;&lt;/li&gt;&quot;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>优化后：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var arr = [&quot;apple&quot;,&quot;banana&quot;,&quot;car&quot;];</div><div class="line">list = $(&quot;ul.obj&quot;);</div><div class="line">var d = &quot;&quot;;</div><div class="line">$.each(arr, function(index, value)&#123;</div><div class="line">d += &quot;&lt;li id=&quot;+index+&quot;&gt;&quot;+value+&quot;&lt;/li&gt;&quot;</div><div class="line">&#125;);</div><div class="line">list.append(d)</div></pre></td></tr></table></figure></p>
+<h4 id="三、对li请求次数由2n次优化成2次："><a href="#三、对li请求次数由2n次优化成2次：" class="headerlink" title="三、对li请求次数由2n次优化成2次："></a>三、对li请求次数由2n次优化成2次：</h4><p>较差：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$(&quot;#a li&quot;).on(&quot;mouseenter&quot;,function()&#123;</div><div class="line">$(this).text(&quot;click me&quot;)</div><div class="line">&#125;);</div><div class="line">$(&quot;#a li&quot;).on(&quot;click&quot;,function()&#123;</div><div class="line">$(this).text(&quot;you click me&quot;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>优化后：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var a = $(&quot;#a&quot;);</div><div class="line">a.on(&quot;mouseenter&quot;,&quot;li&quot;,function()&#123;</div><div class="line">$(this).text(&quot;click me&quot;)</div><div class="line">&#125;);</div><div class="line">a.on(&quot;click&quot;,&quot;li&quot;,function()&#123;</div><div class="line">$(this).text(&quot;you click me&quot;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+
+  </div>
+</article></div>
+			</div>
+			<div class="footer"><div class="inner">
+	&copy; 2017 | <a href="http://github.com/TaoGuuuu" target="_blank">TaoGuuuu</a> | 
+	<script src="https://s22.cnzz.com/z_stat.php?id=1263981465&web_id=1263981465" language="JavaScript"></script>
+	<br> 
+	<span id="busuanzi_container_site_uv">
+  	访客数 <span id="busuanzi_value_site_uv"></span> 人次
+	</span> | 
+	<span id="busuanzi_container_site_pv">
+	  访问量 <span id="busuanzi_value_site_pv"></span> 次
+	</span>	
+</div>
+<div class="return-top" id="return_top">
+	<img src="/css/images/top.png">
+</div>   </div>
+		</div> 
+		<script src="/js/returntop.js"></script>	
+		<script src="/js/share.js"></script>	
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2142922"></script>
+  </body>
+</html>
